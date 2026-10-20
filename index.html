@@ -4,7 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Цифровий світ, українське слово</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
   :root {
     --ink: #1f2430;
@@ -76,46 +75,17 @@
     padding: 0.9rem 1rem 0.6rem;
   }
   .avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    color: #fff;
-    font-weight: 700;
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 auto;
-    background: var(--accent);
+    width: 40px; height: 40px; border-radius: 50%;
+    color: #fff; font-weight: 700; font-size: 0.95rem;
+    display: flex; align-items: center; justify-content: center;
+    flex: 0 0 auto; background: var(--accent);
   }
   .card-head .name { margin: 0; font-weight: 700; font-size: 1.05rem; line-height: 1.2; }
   .card-head .klass { margin: 0; color: var(--muted); font-size: 0.82rem; }
   .topic { margin: 0; padding: 0 1rem 0.55rem; color: var(--muted); font-size: 0.9rem; font-style: italic; }
   .content { padding: 0 0.9rem 0.9rem; }
-  .pdf-wrap { background: #f0f2f7; border-radius: 10px; padding: 7px; text-align: center; }
-  .pdf-wrap canvas { max-width: 100%; height: auto; border-radius: 6px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-  .pdf-toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 0.6rem;
-    flex-wrap: wrap;
-  }
-  .pdf-toolbar button {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 0.38rem 0.75rem;
-    font-size: 0.88rem;
-    cursor: pointer;
-    font-weight: 600;
-  }
-  .pdf-toolbar button:disabled { opacity: 0.4; cursor: default; }
-  .pdf-toolbar .pg { color: var(--muted); font-size: 0.85rem; min-width: 3.4rem; text-align: center; }
-  .pdf-toolbar .fs-btn { background: #111827; }
   video { width: 100%; border-radius: 10px; background: #000; display: block; }
+  .preview { display: block; width: 100%; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
   .link-card { display: flex; flex-direction: column; align-items: center; gap: 0.9rem; padding: 0.6rem 0 0.2rem; text-align: center; }
   .link-card .big { font-size: 2.6rem; }
   .btn {
@@ -128,67 +98,11 @@
     font-weight: 700;
     font-size: 0.95rem;
     transition: transform 0.1s ease, filter 0.2s;
+    margin-top: 0.6rem;
   }
   .btn:hover { filter: brightness(0.92); transform: translateY(-1px); }
   .note { font-size: 0.8rem; color: var(--muted); line-height: 1.4; margin: 0.6rem 0 0; }
   footer { text-align: center; color: var(--muted); font-size: 0.82rem; padding: 0 1rem 2.2rem; }
-
-  /* повноекранний перегляд PDF */
-  .modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(10,13,22,0.94);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: 16px;
-  }
-  .modal.open { display: flex; }
-  .fs-inner {
-    width: 100%;
-    height: 100%;
-    max-width: 1400px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .fs-toolbar {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.8rem;
-    padding: 0.5rem 0 0.8rem;
-    color: #fff;
-  }
-  .fs-toolbar button {
-    background: #2563eb;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    font-size: 0.95rem;
-    cursor: pointer;
-    font-weight: 600;
-  }
-  .fs-toolbar button:disabled { opacity: 0.4; cursor: default; }
-  .fs-toolbar .pg { min-width: 4rem; text-align: center; font-size: 0.95rem; }
-  .fs-toolbar .fs-close { background: #e11d48; margin-left: auto; }
-  .fs-canvas-wrap {
-    flex: 1;
-    width: 100%;
-    overflow: auto;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-  }
-  .fs-canvas-wrap canvas {
-    max-width: 100%;
-    background: #fff;
-    border-radius: 6px;
-    box-shadow: 0 6px 40px rgba(0,0,0,0.5);
-  }
 </style>
 </head>
 <body>
@@ -225,13 +139,9 @@
       </div>
       <p class="topic">Граматична основа: робимо реченню рентген (інтерактивна)</p>
       <div class="content">
-        <a href="bogdan.html" target="_blank" rel="noopener" style="display:block;">
-          <img src="works/bogdan/slides/slide01.png" alt="Прев'ю презентації Богдана" style="width:100%; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1);" />
-        </a>
-        <div class="link-card" style="padding-top:0.8rem;">
-          <a class="btn" href="bogdan.html" target="_blank" rel="noopener">▶ Відкрити презентацію</a>
-          <p class="note">Інтерактивна презентація з відео та тестом — всі кнопки клікабельні.</p>
-        </div>
+        <a href="bogdan.html" target="_blank" rel="noopener"><img class="preview" src="works/bogdan/slides/slide01.png" alt="Прев'ю презентації Богдана" /></a>
+        <a class="btn" href="bogdan.html" target="_blank" rel="noopener" style="display:block;text-align:center;">▶ Відкрити презентацію</a>
+        <p class="note">Інтерактивна презентація з відео та тестом (PowerPoint у браузері).</p>
       </div>
     </article>
 
@@ -245,15 +155,9 @@
       </div>
       <p class="topic">Апгрейд солов'їної: говори без суржику</p>
       <div class="content">
-        <div class="pdf-wrap">
-          <canvas id="pdf-otrishko"></canvas>
-          <div class="pdf-toolbar">
-            <button id="otrishko-prev">← Назад</button>
-            <span class="pg" id="otrishko-pg">…</span>
-            <button id="otrishko-next">Вперед →</button>
-            <button class="fs-btn" id="otrishko-fs">⛶ На весь екран</button>
-          </div>
-        </div>
+        <a href="otrishko.html" target="_blank" rel="noopener"><img class="preview" src="works/otrishko/slides/slide01.png" alt="Прев'ю презентації Отрішка" /></a>
+        <a class="btn" href="otrishko.html" target="_blank" rel="noopener" style="display:block;text-align:center;">▶ Відкрити презентацію</a>
+        <p class="note">Показ слайдів (повноекранний, гортається стрілками).</p>
       </div>
     </article>
 
@@ -269,7 +173,7 @@
       <div class="content">
         <div class="link-card">
           <div class="big">🎨</div>
-          <a class="btn" href="https://canva.link/kdhk2fufp9rcobu" target="_blank" rel="noopener">Відкрити роботу</a>
+          <a class="btn" href="https://canva.link/kdhk2fufp9rcobu" target="_blank" rel="noopener" style="margin-top:0;">Відкрити роботу</a>
           <p class="note">Робота виконана у Canva — відкривається в новій вкладці.</p>
         </div>
       </div>
@@ -278,83 +182,5 @@
   </main>
 
   <footer>Білогородський академічний ліцей №2 · «Цифровий світ, українське слово — презентуємо мову по-новому»</footer>
-
-  <!-- повноекранний модал -->
-  <div class="modal" id="fs-modal">
-    <div class="fs-inner">
-      <div class="fs-toolbar">
-        <button id="fs-prev">← Назад</button>
-        <span class="pg" id="fs-pg">…</span>
-        <button id="fs-next">Вперед →</button>
-        <button class="fs-close" id="fs-close">✕ Закрити</button>
-      </div>
-      <div class="fs-canvas-wrap">
-        <canvas id="fs-canvas"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-
-    const modal = document.getElementById("fs-modal");
-    const fsCanvas = document.getElementById("fs-canvas");
-    const fsCtx = fsCanvas.getContext("2d");
-    const fsPrev = document.getElementById("fs-prev");
-    const fsNext = document.getElementById("fs-next");
-    const fsPg = document.getElementById("fs-pg");
-    const fsClose = document.getElementById("fs-close");
-
-    function closeModal() { modal.classList.remove("open"); }
-    fsClose.onclick = closeModal;
-    modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
-
-    async function initPdf(url, canvasId, prevId, nextId, pgId, fsBtnId) {
-      try {
-        const pdf = await pdfjsLib.getDocument(url).promise;
-        const canvas = document.getElementById(canvasId);
-        const ctx = canvas.getContext("2d");
-        let num = 1;
-        let fsNum = 1;
-
-        async function renderPage(n, cvs, c, fitW, fitH, pgLabel) {
-          const page = await pdf.getPage(n);
-          const base = page.getViewport({ scale: 1 });
-          const scale = Math.min(fitW / base.width, fitH / base.height);
-          const vp = page.getViewport({ scale });
-          cvs.width = vp.width;
-          cvs.height = vp.height;
-          await page.render({ canvasContext: c, viewport: vp }).promise;
-          if (pgLabel) pgLabel.textContent = n + " / " + pdf.numPages;
-        }
-
-        async function renderSmall() {
-          await renderPage(num, canvas, ctx, canvas.parentElement.clientWidth - 14, 100000, document.getElementById(pgId));
-        }
-        async function renderFull() {
-          await renderPage(fsNum, fsCanvas, fsCtx, fsCanvas.parentElement.clientWidth - 20, window.innerHeight - 150, fsPg);
-        }
-
-        document.getElementById(prevId).onclick = () => { if (num > 1) { num--; renderSmall(); } };
-        document.getElementById(nextId).onclick = () => { if (num < pdf.numPages) { num++; renderSmall(); } };
-        document.getElementById(fsBtnId).onclick = () => {
-          fsNum = num;
-          modal.classList.add("open");
-          renderFull();
-        };
-
-        fsPrev.onclick = () => { if (fsNum > 1) { fsNum--; renderFull(); } };
-        fsNext.onclick = () => { if (fsNum < pdf.numPages) { fsNum++; renderFull(); } };
-
-        await renderSmall();
-      } catch (e) {
-        console.error("PDF load error:", e);
-      }
-    }
-
-    initPdf("works/otrishko-roman-8v.pdf", "pdf-otrishko", "otrishko-prev", "otrishko-next", "otrishko-pg", "otrishko-fs");
-  </script>
 </body>
 </html>

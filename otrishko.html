@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Отрішко Роман — Апгрейд солов'їної</title>
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #0d1117; }
+  body { font-family: "Segoe UI", system-ui, sans-serif; overflow: hidden; }
+  #topbar {
+    height: 48px; display: flex; align-items: center; gap: 0.9rem;
+    padding: 0 1rem; background: #161b22; color: #e6edf3; font-size: 0.92rem;
+    position: relative; z-index: 10;
+  }
+  #topbar a { color: #ffd166; text-decoration: none; font-weight: 600; }
+  #topbar .title { font-weight: 600; }
+  #topbar .pg { margin-left: auto; color: #9aa4b2; font-size: 0.85rem; }
+  #stage-wrap { display: flex; align-items: center; justify-content: center; height: calc(100vh - 48px); }
+  #stage { position: relative; aspect-ratio: 16/9; width: min(100vw, calc((100vh - 48px) * 16 / 9)); }
+  #slide-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; box-shadow: 0 10px 40px rgba(0,0,0,0.55); background: #000; }
+  .nav {
+    position: fixed; top: 50%; transform: translateY(-50%);
+    width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(255,255,255,0.12); color: #fff; border: none;
+    font-size: 1.5rem; cursor: pointer; z-index: 20;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .nav:hover { background: rgba(255,255,255,0.25); }
+  .nav:disabled { opacity: 0.25; cursor: default; }
+  #prev { left: 14px; }
+  #next { right: 14px; }
+  #hint { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); color: #9aa4b2; font-size: 0.78rem; opacity: 0.75; }
+</style>
+</head>
+<body>
+  <div id="topbar">
+    <a href="index.html">← На стенд</a>
+    <span class="title">Отрішко Роман · Апгрейд солов'їної: говори без суржику</span>
+    <span class="pg" id="pg"></span>
+  </div>
+  <div id="stage-wrap">
+    <div id="stage">
+      <img id="slide-img" src="works/otrishko/slides/slide01.png" alt="" />
+    </div>
+  </div>
+  <button class="nav" id="prev" aria-label="Назад">‹</button>
+  <button class="nav" id="next" aria-label="Вперед">›</button>
+  <div id="hint">← → — гортати слайди · F — весь екран</div>
+
+  <script>
+    var TOTAL = 10, cur = 1;
+    var img = document.getElementById("slide-img");
+    var pg = document.getElementById("pg");
+    var prev = document.getElementById("prev");
+    var next = document.getElementById("next");
+
+    function show(n) {
+      if (n < 1 || n > TOTAL) return;
+      cur = n;
+      img.src = "works/otrishko/slides/slide" + String(n).padStart(2, "0") + ".png";
+      pg.textContent = n + " / " + TOTAL;
+      prev.disabled = (n === 1);
+      next.disabled = (n === TOTAL);
+    }
+    prev.onclick = function () { show(cur - 1); };
+    next.onclick = function () { show(cur + 1); };
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") show(cur + 1);
+      if (e.key === "ArrowLeft") show(cur - 1);
+      if (e.key.toLowerCase() === "f") {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+        else document.exitFullscreen();
+      }
+    });
+    show(1);
+  </script>
+</body>
+</html>
