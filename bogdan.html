@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Богдан Тищенко — Граматична основа (інтерактивна)</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #0d1117; height: 100%; }
+  body { font-family: "Segoe UI", system-ui, sans-serif; overflow: hidden; }
+  #topbar {
+    height: 48px; display: flex; align-items: center; gap: 0.9rem;
+    padding: 0 1rem; background: #161b22; color: #e6edf3; font-size: 0.92rem;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.4); position: relative; z-index: 10;
+  }
+  #topbar a { color: #ffd166; text-decoration: none; font-weight: 600; }
+  #topbar .title { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #topbar .pg { margin-left: auto; color: #9aa4b2; font-size: 0.85rem; }
+  #stage-wrap { display: flex; align-items: center; justify-content: center; height: calc(100vh - 48px); }
+  #stage { position: relative; aspect-ratio: 16/9; width: min(100vw, calc((100vh - 48px) * 16 / 9)); box-shadow: 0 10px 40px rgba(0,0,0,0.55); }
+  #slide-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; display: block; }
+  #hotspots { position: absolute; inset: 0; }
+  .hs { position: absolute; cursor: pointer; }
+  .hs:hover { outline: 2px solid rgba(255,209,102,0.75); outline-offset: -1px; border-radius: 4px; }
+  #video-wrap { position: absolute; display: none; }
+  #video-wrap video { width: 100%; height: 100%; display: block; background: #000; }
+  #hint { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); color: #9aa4b2; font-size: 0.78rem; opacity: 0.75; }
+</style>
+</head>
+<body>
+  <div id="topbar">
+    <a href="index.html">← На стенд</a>
+    <span class="title">Богдан Тищенко · Граматична основа: робимо реченню рентген</span>
+    <span class="pg" id="pg"></span>
+  </div>
+  <div id="stage-wrap">
+    <div id="stage">
+      <img id="slide-img" src="works/bogdan/slides/slide01.png" alt="" />
+      <div id="hotspots"></div>
+      <div id="video-wrap">
+        <video id="vid" controls preload="none" src="works/bogdan/video.mp4"></video>
+      </div>
+    </div>
+  </div>
+  <div id="hint">Клікай по кнопках на слайді · ←/→ або Esc — навігація</div>
+
+  <script>
+    var HOT = {"1": [{"x": 9646920, "y": 5870448, "cx": 1874519, "cy": 603504, "target": 2, "label": "Почати ▶"}], "2": [{"x": 9098280, "y": 301752, "cx": 2606040, "cy": 512064, "target": 3, "label": "Ментальна карта →"}], "3": [{"x": 7452360, "y": 301752, "cx": 1600200, "cy": 512064, "target": 2, "label": "← Відео"}, {"x": 9189720, "y": 301752, "cx": 2514600, "cy": 512064, "target": 8, "label": "До тесту →"}, {"x": 723804, "y": 1115822, "cx": 4177188, "cy": 2805430, "target": 4, "label": ""}, {"x": 4590097, "y": 969518, "cx": 420624, "cy": 420624, "target": 4, "label": "+"}, {"x": 7287958, "y": 1115822, "cx": 4177188, "cy": 2865120, "target": 5, "label": ""}, {"x": 11154251, "y": 969518, "cx": 420624, "cy": 420624, "target": 5, "label": "+"}, {"x": 723804, "y": 4064507, "cx": 4177188, "cy": 2626360, "target": 6, "label": ""}, {"x": 4590097, "y": 3918203, "cx": 420624, "cy": 420624, "target": 6, "label": "+"}, {"x": 7287958, "y": 4148073, "cx": 4177188, "cy": 2506980, "target": 7, "label": ""}, {"x": 11154251, "y": 4001769, "cx": 420624, "cy": 420624, "target": 7, "label": "+"}], "4": [{"x": 9692640, "y": 301752, "cx": 2011680, "cy": 512064, "target": 5, "label": "Присудок →"}, {"x": 7909560, "y": 301752, "cx": 1600200, "cy": 512064, "target": 3, "label": "← Карта"}], "5": [{"x": 10241280, "y": 301752, "cx": 1463040, "cy": 512064, "target": 6, "label": "Тире →"}, {"x": 8458200, "y": 301752, "cx": 1600200, "cy": 512064, "target": 3, "label": "← Карта"}], "6": [{"x": 9555480, "y": 301752, "cx": 2148839, "cy": 512064, "target": 7, "label": "Як знайти →"}, {"x": 7772400, "y": 301752, "cx": 1600200, "cy": 512064, "target": 3, "label": "← Карта"}], "7": [{"x": 9692640, "y": 301752, "cx": 2011680, "cy": 512064, "target": 8, "label": "До тесту →"}, {"x": 7909560, "y": 301752, "cx": 1600200, "cy": 512064, "target": 3, "label": "← Карта"}], "8": [{"x": 9418320, "y": 301752, "cx": 2286000, "cy": 512064, "target": 3, "label": "← Карта"}, {"x": 685800, "y": 5715000, "cx": 3017520, "cy": 676656, "target": 9, "label": "Почати тест →"}], "9": [{"x": 685800, "y": 3401568, "cx": 10817352, "cy": 822960, "target": 10, "label": "друг подарував А"}, {"x": 685800, "y": 4425696, "cx": 10817352, "cy": 822960, "target": 11, "label": "друг гру Б"}, {"x": 685800, "y": 5449824, "cx": 10817352, "cy": 822960, "target": 11, "label": "подарував мені В"}], "10": [{"x": 8549640, "y": 5760720, "cx": 2953512, "cy": 640080, "target": 12, "label": "Наступне питання →"}], "11": [{"x": 8138160, "y": 5623560, "cx": 3364992, "cy": 713232, "target": 9, "label": "← Спробувати ще раз"}], "12": [{"x": 685800, "y": 3401568, "cx": 10817352, "cy": 822960, "target": 14, "label": "одного А"}, {"x": 685800, "y": 4425696, "cx": 10817352, "cy": 822960, "target": 13, "label": "семеро Б"}, {"x": 685800, "y": 5449824, "cx": 10817352, "cy": 822960, "target": 14, "label": "не чекають В"}], "13": [{"x": 8549640, "y": 5760720, "cx": 2953512, "cy": 640080, "target": 15, "label": "Наступне питання →"}], "14": [{"x": 8138160, "y": 5623560, "cx": 3364992, "cy": 713232, "target": 12, "label": "← Спробувати ще раз"}], "15": [{"x": 685800, "y": 2377440, "cx": 10817352, "cy": 1005840, "target": 17, "label": "Ми почали плавати в басейні. А"}, {"x": 685800, "y": 3657600, "cx": 10817352, "cy": 1005840, "target": 17, "label": "Плавання зміцнює здоров’я. Б"}, {"x": 685800, "y": 4937760, "cx": 10817352, "cy": 1005840, "target": 16, "label": "Плавати — моє улюблене заняття. В"}], "16": [{"x": 8549640, "y": 5760720, "cx": 2953512, "cy": 640080, "target": 18, "label": "Наступне питання →"}], "17": [{"x": 8138160, "y": 5623560, "cx": 3364992, "cy": 713232, "target": 15, "label": "← Спробувати ще раз"}], "18": [{"x": 685800, "y": 3401568, "cx": 10817352, "cy": 822960, "target": 20, "label": "складений дієслівний А"}, {"x": 685800, "y": 4425696, "cx": 10817352, "cy": 822960, "target": 19, "label": "простий дієслівний Б"}, {"x": 685800, "y": 5449824, "cx": 10817352, "cy": 822960, "target": 20, "label": "складений іменний В"}], "19": [{"x": 8549640, "y": 5760720, "cx": 2953512, "cy": 640080, "target": 21, "label": "Наступне питання →"}], "20": [{"x": 8138160, "y": 5623560, "cx": 3364992, "cy": 713232, "target": 18, "label": "← Спробувати ще раз"}], "21": [{"x": 685800, "y": 3401568, "cx": 10817352, "cy": 822960, "target": 23, "label": "простий дієслівний А"}, {"x": 685800, "y": 4425696, "cx": 10817352, "cy": 822960, "target": 23, "label": "складений іменний Б"}, {"x": 685800, "y": 5449824, "cx": 10817352, "cy": 822960, "target": 22, "label": "складений дієслівний В"}], "22": [{"x": 8549640, "y": 5760720, "cx": 2953512, "cy": 640080, "target": 24, "label": "Наступне питання →"}], "23": [{"x": 8138160, "y": 5623560, "cx": 3364992, "cy": 713232, "target": 21, "label": "← Спробувати ще раз"}], "24": [{"x": 685800, "y": 3401568, "cx": 10817352, "cy": 822960, "target": 25, "label": "складений іменний А"}, {"x": 685800, "y": 4425696, "cx": 10817352, "cy": 822960, "target": 26, "label": "простий дієслівний Б"}, {"x": 685800, "y": 5449824, "cx": 10817352, "cy": 822960, "target": 26, "label": "складений дієслівний В"}], "25": [{"x": 8549640, "y": 5760720, "cx": 2953512, "cy": 640080, "target": 27, "label": "Наступне питання →"}], "26": [{"x": 8138160, "y": 5623560, "cx": 3364992, "cy": 713232, "target": 24, "label": "← Спробувати ще раз"}], "27": [{"x": 685800, "y": 2377440, "cx": 10817352, "cy": 1005840, "target": 29, "label": "Він … мій найкращий друг. А"}, {"x": 685800, "y": 3657600, "cx": 10817352, "cy": 1005840, "target": 29, "label": "Озеро … мов дзеркало. Б"}, {"x": 685800, "y": 4937760, "cx": 10817352, "cy": 1005840, "target": 28, "label": "Дніпро … найбільша річка України. В"}], "28": [{"x": 8549640, "y": 5760720, "cx": 2953512, "cy": 640080, "target": 30, "label": "Наступне питання →"}], "29": [{"x": 8138160, "y": 5623560, "cx": 3364992, "cy": 713232, "target": 27, "label": "← Спробувати ще раз"}], "30": [{"x": 685800, "y": 3401568, "cx": 10817352, "cy": 822960, "target": 32, "label": "Ми почали А"}, {"x": 685800, "y": 4425696, "cx": 10817352, "cy": 822960, "target": 31, "label": "Ми з сестрою почали вивчати Б"}, {"x": 685800, "y": 5449824, "cx": 10817352, "cy": 822960, "target": 32, "label": "сестрою вивчати В"}], "31": [{"x": 8778240, "y": 5760720, "cx": 2724912, "cy": 640080, "target": 33, "label": "Завершити тест →"}], "32": [{"x": 8138160, "y": 5623560, "cx": 3364992, "cy": 713232, "target": 30, "label": "← Спробувати ще раз"}], "33": [{"x": 685800, "y": 4160520, "cx": 3017520, "cy": 603504, "target": 9, "label": "Пройти тест ще раз"}, {"x": 3886200, "y": 4160520, "cx": 2926080, "cy": 603504, "target": 2, "label": "Переглянути відео"}, {"x": 6995160, "y": 4160520, "cx": 2194560, "cy": 603504, "target": 1, "label": "На початок"}]};
+    var SW = 12192000, SH = 6858000;
+    var CORRECT = [10, 13, 16, 19, 22, 25, 28, 31];
+    var WRONG = [11, 14, 17, 20, 23, 26, 29, 32];
+    var cur = 1;
+
+    var correctAudio = new Audio("works/bogdan/audio1.wav");
+    var wrongAudio = new Audio("works/bogdan/audio2.wav");
+    var vid = document.getElementById("vid");
+
+    function showSlide(n) {
+      if (n < 1 || n > 33) return;
+      cur = n;
+      var img = document.getElementById("slide-img");
+      img.src = "works/bogdan/slides/slide" + String(n).padStart(2, "0") + ".png";
+      document.getElementById("pg").textContent = n + " / 33";
+      renderHotspots();
+      // video only on slide 2
+      var vw = document.getElementById("video-wrap");
+      if (n === 2) {
+        vw.style.display = "block";
+        vw.style.left = (1112826 / SW * 100) + "%";
+        vw.style.top = (1024129 / SH * 100) + "%";
+        vw.style.width = (9966553 / SW * 100) + "%";
+        vw.style.height = (5606186 / SH * 100) + "%";
+      } else {
+        vw.style.display = "none";
+        vid.pause();
+      }
+      // sounds
+      if (CORRECT.indexOf(n) >= 0) { correctAudio.currentTime = 0; correctAudio.play(); }
+      if (WRONG.indexOf(n) >= 0) { wrongAudio.currentTime = 0; wrongAudio.play(); }
+    }
+
+    function renderHotspots() {
+      var c = document.getElementById("hotspots");
+      c.innerHTML = "";
+      var spots = HOT[String(cur)] || [];
+      spots.forEach(function (s) {
+        if (s.target == null) return;
+        var d = document.createElement("div");
+        d.className = "hs";
+        d.style.left = (s.x / SW * 100) + "%";
+        d.style.top = (s.y / SH * 100) + "%";
+        d.style.width = (s.cx / SW * 100) + "%";
+        d.style.height = (s.cy / SH * 100) + "%";
+        d.title = s.label || "";
+        d.onclick = function () { showSlide(s.target); };
+        c.appendChild(d);
+      });
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") showSlide(cur + 1);
+      if (e.key === "ArrowLeft") showSlide(cur - 1);
+    });
+
+    showSlide(1);
+  </script>
+</body>
+</html>
